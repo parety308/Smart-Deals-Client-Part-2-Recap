@@ -12,7 +12,7 @@ const Navbar = () => {
     <li><NavLink to='/allproducts'>All Products</NavLink></li>
     <li><NavLink to='/myproducts'>My Products</NavLink></li>
     <li><NavLink to='/mybids'>My Bids</NavLink></li>
-    <li><NavLink to='/createproducts'>Create Product</NavLink></li>
+    <li><NavLink to='/createAProduct'>Create Product</NavLink></li>
   </>
   const handleSignOut = () => {
     signOutUser()

@@ -47,7 +47,7 @@ const updateUser=(user)=>{
                     body:JSON.stringify(loggedUser)})
                     .then(res=>res.json())
                     .then(data=>{
-                        console.log('after getting token',data);
+                        // console.log('after getting token',data);
                         localStorage.setItem('token',data.token)
                     })
             }

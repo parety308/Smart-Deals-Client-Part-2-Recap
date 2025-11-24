@@ -7,8 +7,8 @@ import Register from "../Auth/Register/Register";
 import PrivateRoutes from "./PrivateRoutes";
 import MyBids from '../../MyBids/MyBids';
 import MyProducts from "../MyProducts/MyProducts";
-import CreateProducts from '../CreateProducts/CreateProducts'
 import ProductDetails from "../ProductDetails/ProductDetails";
+import CreateAProduct from '../CreateAProduct/CreateAProduct'
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -35,18 +35,18 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/myproducts',
-                element: <PrivateRoutes><MyProducts/>  </PrivateRoutes>
-            },
+                element: <PrivateRoutes><MyProducts />  </PrivateRoutes>
+            }
+            , {
+                path: '/productsdetails/:id',
+                loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`),
+                element: <PrivateRoutes><ProductDetails /></PrivateRoutes>
+            }
+            ,
             {
-                path: '/createproducts',
-                element: <PrivateRoutes><CreateProducts /></PrivateRoutes>
+                path: '/createAProduct',
+                element: <PrivateRoutes><CreateAProduct/></PrivateRoutes>
             }
-            ,{
-                path:'/productsdetails/:id',
-                loader:({params})=>fetch(`http://localhost:3000/products/${params.id}`),
-                element:<PrivateRoutes><ProductDetails/></PrivateRoutes>
-            }
-
         ]
 
     }

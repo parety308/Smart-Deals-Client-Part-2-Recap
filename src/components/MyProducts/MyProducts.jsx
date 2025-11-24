@@ -1,18 +1,27 @@
 import React, { use, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { data } from 'react-router';
+import useAxiosSecure from '../useAuth/useAxiosSecure';
 
 const MyProducts = () => {
     const { user } = use(AuthContext);
     const [bids, setBids] = useState([]);
 
+    const axiosSecure = useAxiosSecure();
     useEffect(() => {
-        if (user?.email) {
-            fetch(`http://localhost:3000/bids?email=${user?.email}`)
-                .then(res => res.json())
-                .then(data => setBids(data));
-        }
-    }, [user?.email]);
+        axiosSecure.get(`/bids?email=${user?.email}`)
+            .then(data => {
+                setBids(data.data);
+            })
+    }, [user, axiosSecure])
+
+    // useEffect(() => {
+    // if (user?.email) {
+    // fetch(`http://localhost:3000/bids?email=${user?.email}`)
+    // .then(res => res.json())
+    // .then(data => setBids(data));
+    // }
+    // }, [user?.email]);
     // console.log(bids);
     return (
         <div>

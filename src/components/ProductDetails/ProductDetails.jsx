@@ -3,6 +3,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink, useLoaderData, useNavigate, useParams } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ProductDetails = () => {
     const [bids, setBids] = useState([]);
@@ -11,18 +12,27 @@ const ProductDetails = () => {
     const { _id: productId, title, price_min, price_max, email, category, created_at, image, status, location, seller_image, condition, usage, seller_contact, seller_name } = product;
     const bidModalRef = useRef(null);
 
+
     useEffect(() => {
-        fetch(`http://localhost:3000/products/bids/${productId}`,{
-            headers:{
-                authorization:`Bearer ${user.accessToken}`
-            }
-        })
-            .then(res => res.json())
+        axios.get(`http://localhost:3000/products/bids/${productId}`)
             .then(data => {
-                console.log('bid for this data', data);
-                setBids(data);
-            })
+                console.log('after axios ', data)
+                setBids(data.data);
+            });
     }, [productId]);
+
+    // useEffect(() => {
+    // fetch(`http://localhost:3000/products/bids/${productId}`,{
+    // headers:{
+    // authorization:`Bearer ${user.accessToken}`
+    // }
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    // console.log('bid for this data', data);
+    // setBids(data);
+    // })
+    // }, [productId]);
 
     const handleBidModalOpen = () => {
         bidModalRef.current.showModal();
@@ -58,7 +68,7 @@ const ProductDetails = () => {
                     toast('Bid Added Successfully');
                     newBid._id = data.insertedId;
                     const newBids = [...bids, newBid];
-                    newBids.sort((a,b)=>b.bid_price-a.bid_price);
+                    newBids.sort((a, b) => b.bid_price - a.bid_price);
                     setBids(newBids);
                 }
             });
@@ -77,7 +87,7 @@ const ProductDetails = () => {
                     </div>
                     <div>
                         <h1 className="text-3xl">Product Description</h1>
-                        <div className='font-bold flex justify-between items-center text-xl mb-4  border-b-1'>
+                        <div className='font-bold flex justify-between items-center text-xl mb-4  border-b-2'>
                             <h1>Condition : {condition}</h1>
                             <h1 className='mb-2'>Usage : {usage}</h1>
                         </div>
@@ -165,7 +175,7 @@ const ProductDetails = () => {
                         <tbody>
                             {
                                 bids.map((bid, index) =>
-                                    <tr className='text-center'>
+                                    <tr key={bid._id} className='text-center'>
                                         <td className='text-xl font-bold'>{index + 1}</td>
                                         <td>
                                             <div className="flex items-center gap-3">
@@ -189,7 +199,7 @@ const ProductDetails = () => {
                                             <button className="btn border-[#4CAF50]">Accept Offer</button>
                                             <button className="btn text-red-500 border-red-500">Reject  offer</button>
                                         </th>
-                                    </tr> )
+                                    </tr>)
                             }
                         </tbody>
                     </table>
